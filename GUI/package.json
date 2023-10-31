@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "@sakun/system.css": "^0.1.11",
     "@vueuse/core": "^10.5.0",
     "axios": "^1.6.0",
     "crypto-js": "^4.2.0",

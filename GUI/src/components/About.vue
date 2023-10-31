@@ -1,6 +1,5 @@
 <template>
   <div>
-    <a1>About.me</a1>
-    <p1>This is a fork</p1>
+    <h1>About.me</h1>
   </div>
 </template>
