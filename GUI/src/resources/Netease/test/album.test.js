@@ -2,7 +2,7 @@ const assert = require('assert')
 const { default: axios } = require('axios')
 const host = global.host || 'http://localhost:3000'
 const config = require('../util/config.json')
-describe('测试获取歌手专辑列表是否正常', () => {
+describe('测试获取歌手Album列表是否正常', () => {
   it('数据的 code 应该为200', (done) => {
     const qs = {
       id: 32311,

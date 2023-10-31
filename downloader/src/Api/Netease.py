@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - Netease.py
-#  @修改时间    : 2023-07-30 09:11:08
-#  @上次修改    : 2023/7/30 下午9:11
 import json
 import os
 import time
@@ -81,7 +75,7 @@ class Netease(BaseApi):
         # fee: enum,
         #   0: 免费或无版权
         #   1: VIP 歌曲
-        #   4: 购买专辑
+        #   4: 购买Album
         #   8: 非会员可免费播放低音质，会员可播放高音质及下载
         #   fee 为 1 或 8 的歌曲均可单独购买 2 元单曲
         # t: enum,
@@ -317,7 +311,7 @@ class Netease(BaseApi):
                 'size': "无",
                 'title': li['name'],
                 'singer': li['singer'],
-                'album': "无专辑",
+                'album': "无Album",
                 'time_publish': "无",
                 # 'hasLossless': li['hasLossless'],
                 'readableText': f"{li['singer']} - {li['name']}"

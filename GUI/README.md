@@ -4,5 +4,5 @@
 
 ```shell
 pnpm i
-pnpm run
+pnpm dev
 ```

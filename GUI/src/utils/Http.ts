@@ -1,18 +1,5 @@
-/*
- * # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
- * # @作者         : 秋城落叶(QiuChenly)
- * # @邮件         : qiuchenly@outlook.com
- * # @文件         : 项目 [qqmusic] - Http.ts
- * # @修改时间    : 2023-03-20 02:05:20
- * # @上次修改    : 2023/3/20 上午2:05
- */
-
 import axios, { AxiosResponse } from "axios";
-import {
-  InitAnonimous,
-  SearchMusicResult,
-  SearchMusicResultSingle,
-} from "@/utils/type/BasicType";
+import { InitAnonimous, SearchMusicResult, SearchMusicResultSingle } from "@/utils/type/BasicType";
 import { NetEaseUserInfo } from "@/utils/type/UserInfoDetail";
 import { MusicPlaylist } from "@/utils/type/NeteaseMusicPlayList";
 import { NeteasePlayListSongs } from "@/utils/type/NetEasePlayListSong";
@@ -25,7 +12,7 @@ const userStore = () => {
 };
 
 const config = {
-  baseURL: process.env.NODE_ENV === 'production' ? "" : "http://127.0.0.1:8899",
+  baseURL: process.env.NODE_ENV === "production" ? "" : "http://127.0.0.1:8899",
   // baseURL: "", // 本地测试时使用
   timeout: 15000,
   headers: {
@@ -99,19 +86,19 @@ export const Api = {
       code: Number;
     }>("/status");
   },
-  async searchMusic(key: string, page: number, type = "qq", size = 30, extra = '') {
+  async searchMusic(key: string, page: number, type = "qq", size = 30, extra = "") {
     let url = "/" + type + "/search/" + key + "/" + page + "/" + size + extra;
     return this.get<SearchMusicResult>(url);
   },
   /**
    * 获取酷我搜索token
-   * @returns 
+   * @returns
    */
   async getKWToken() {
     return this.get<{
-      code: number,
-      token: string
-    }>("/kw/search/getToken")
+      code: number;
+      token: string;
+    }>("/kw/search/getToken");
   },
   async searchMusicForMyFreeMp3(
     type = "myfreemp3",
@@ -122,12 +109,12 @@ export const Api = {
       type: string;
       v: string;
     } = {
-        page: 1,
-        text: "",
-        token: "",
-        type: "YQM",
-        v: "beta",
-      }
+      page: 1,
+      text: "",
+      token: "",
+      type: "YQM",
+      v: "beta",
+    }
   ) {
     let url = "/" + type + "/search";
     return this.post<SearchMusicResult>(url, data);
@@ -171,12 +158,9 @@ export const Api = {
       code: number;
     }>("/es/setCookie", data),
   initAnonimous: () => Api.get<InitAnonimous>("/es/initAnonimous"),
-  getUserPlaylist: (userid: string) =>
-    Api.get<MusicPlaylist>("/es/getUserPlaylist/" + userid),
+  getUserPlaylist: (userid: string) => Api.get<MusicPlaylist>("/es/getUserPlaylist/" + userid),
   getMusicListByPlaylistID: (playListID: string, page: number, size: number) =>
-    Api.get<NeteasePlayListSongs>(
-      `/es/getMusicListByPlaylistID/${playListID}/${page}/${size}`
-    ),
+    Api.get<NeteasePlayListSongs>(`/es/getMusicListByPlaylistID/${playListID}/${page}/${size}`),
   getNeteaseCloud: () => Api.get<CloudResponse>(`/es/getCloud?${Date.now()}`),
   delNeteaseCloud: () => Api.get<CloudResponse>(`/es/getCloud`),
   bindSid2Asid: (data: { sid: number; asid: number; uid: number }) =>
@@ -186,6 +170,6 @@ export const Api = {
   },
   // 本地文件管理接口
   getLocalFiles() {
-    return Api.get<any>("/files/getAllFileList")
-  }
+    return Api.get<any>("/files/getAllFileList");
+  },
 };

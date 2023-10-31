@@ -1,12 +1,3 @@
-/*
- * # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
- * # @作者         : 秋城落叶(QiuChenly)
- * # @邮件         : qiuchenly@outlook.com
- * # @文件         : 项目 [qqmusic] - NetEasePlayListSong.ts
- * # @修改时间    : 2023-03-20 01:47:11
- * # @上次修改    : 2023/3/20 上午1:47
- */
-
 export interface NeteasePlayListSongs {
   code: number;
   list: NeteasePlayListSongsList[];

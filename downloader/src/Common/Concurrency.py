@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - Concurrency.py
-#  @修改时间    : 2023-07-28 02:05:27
-#  @上次修改    : 2023/7/28 下午2:05
 import os
 from concurrent import futures
 from concurrent.futures import ThreadPoolExecutor
@@ -56,7 +50,7 @@ class Downloader():
 
         """
         self.save_lyric = save_lyric
-    
+
     def get_lyric(self):
         return self.save_lyric
 

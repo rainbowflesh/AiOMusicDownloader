@@ -1,12 +1,3 @@
-/*
- * # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
- * # @作者         : 秋城落叶(QiuChenly)
- * # @邮件         : qiuchenly@outlook.com
- * # @文件         : 项目 [qqmusic] - CloudResponse.ts
- * # @修改时间    : 2023-03-14 08:35:43
- * # @上次修改    : 2023/3/14 下午8:35
- */
-
 export interface CloudResponse {
   count: number;
   hasMore: boolean;

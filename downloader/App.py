@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - App.py
-#  @修改时间    : 2023-07-28 10:52:00
-#  @上次修改    : 2023/7/28 下午10:52
 import json
 import os.path
 import time

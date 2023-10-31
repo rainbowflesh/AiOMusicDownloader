@@ -1,22 +1,10 @@
-<!--
-  - # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-  - # @作者         : 秋城落叶(QiuChenly)
-  - # @邮件         : qiuchenly@outlook.com
-  - # @文件         : 项目 [qqmusic] - Netease.vue
-  - # @修改时间    : 2023-03-20 02:08:45
-  - # @上次修改    : 2023/3/20 上午2:08
-  -->
-
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, computed, watch } from "vue";
 import { ref2, SystemStore } from "@/store/SystemStore";
 import { Api } from "@/utils/Http";
 import QrcodeVue from "qrcode.vue";
-import UserInfo from "@/component/UserInfo.vue";
-import {
-  NeteasePlayListSongsList,
-  Privileges,
-} from "@/utils/type/NetEasePlayListSong";
+import UserInfo from "@/components/UserInfo.vue";
+import { NeteasePlayListSongsList, Privileges } from "@/utils/type/NetEasePlayListSong";
 import { timestampToTime } from "@/utils/Utils";
 import { MusicPlayList2List } from "@/utils/type/NeteaseMusicPlayList";
 import { ElNotification } from "element-plus";
@@ -33,19 +21,6 @@ const userPlaylistFetch = ref<Array<NeteasePlayListSongsList>>();
 
 const head = ref<HTMLDivElement>();
 const paddingHeadHeight = ref(0);
-
-// import { banner, lyric } from '../Netease'
-
-// const testNetease = () => {
-//   banner({ type: 0 }).then((res) => {
-//     console.log(res)
-//   })
-//   lyric({
-//     id: '33894312',
-//   }).then((res) => {
-//     console.log(res)
-//   })
-// }
 
 const UserFunction = {
   switchLoginQRCode() {
@@ -112,15 +87,13 @@ const UserFunction = {
     });
   },
   fetchPlayListMusic(pid: string) {
-    return Api.getMusicListByPlaylistID(pid, page.value, pageSize.value).then(
-      (r) => {
-        if (r === undefined) return;
-        if (r.code === 20001) {
-          return;
-        }
-        userPlaylistFetch.value = r.list;
+    return Api.getMusicListByPlaylistID(pid, page.value, pageSize.value).then((r) => {
+      if (r === undefined) return;
+      if (r.code === 20001) {
+        return;
       }
-    );
+      userPlaylistFetch.value = r.list;
+    });
   },
 };
 
@@ -212,7 +185,7 @@ const getFeeType = (row: NeteasePlayListSongsList) => {
       tip = "会员播放";
       break;
     case 4:
-      tip = "购买专辑";
+      tip = "购买Album";
       break;
     case 8:
       tip = "会员下载";
@@ -237,21 +210,15 @@ const tb6V = function (eD1x: Privileges, action: string = "") {
     if (eD1x.pl <= 0 && (eD1x.fee > 63 || eD1x.flag > 4095)) {
       return 1e4;
     }
-    if (
-      action == "download" &&
-      eD1x.dl <= 0 &&
-      (eD1x.fee > 63 || eD1x.flag > 4095)
-    ) {
+    if (action == "download" && eD1x.dl <= 0 && (eD1x.fee > 63 || eD1x.flag > 4095)) {
       return 10001;
     }
     if (eD1x.st != null && eD1x.st < 0) {
       return 100; //由于版权保护，您所在的地区暂时无法使用。
     }
-    if (eD1x.fee > 0 && eD1x.fee !== 8 && eD1x.payed === 0 && eD1x.pl <= 0)
-      return 10; //唱片公司要求，当前歌曲须付费使用。
+    if (eD1x.fee > 0 && eD1x.fee !== 8 && eD1x.payed === 0 && eD1x.pl <= 0) return 10; //唱片公司要求，当前歌曲须付费使用。
     if (eD1x.fee === 16 || (eD1x.fee === 4 && eD1x.flag & 2048)) return 11; //版权方要求，该歌曲须下载后播放
-    if ((eD1x.fee === 0 || eD1x.payed) && eD1x.pl > 0 && eD1x.dl === 0)
-      return 1e3;
+    if ((eD1x.fee === 0 || eD1x.payed) && eD1x.pl > 0 && eD1x.dl === 0) return 1e3;
     if (eD1x.pl === 0 && eD1x.dl === 0) return 100; //由于版权保护，您所在的地区暂时无法使用。
     return 0;
   } else {
@@ -266,35 +233,37 @@ const tb6V = function (eD1x: Privileges, action: string = "") {
 };
 
 const matchMusic = ref(false);
-const waitMatchMusic = ref<NeteasePlayListSongsList>(
-  {} as NeteasePlayListSongsList
-);
+const waitMatchMusic = ref<NeteasePlayListSongsList>({} as NeteasePlayListSongsList);
 const willSearchString = ref("");
 const handleMatch = (song: NeteasePlayListSongsList) => {
   waitMatchMusic.value = song;
   matchMusic.value = true;
-  willSearchString.value =
-    song.author_simple + " " + song.title + " " + song.album;
+  willSearchString.value = song.author_simple + " " + song.title + " " + song.album;
 };
 </script>
 
 <template>
   <div class="content">
-    <el-dialog class="dialog-attr" destroy-on-close align-center width="90%" v-model="matchMusic"
-      :title="'查找歌曲 - ' + waitMatchMusic.title">
+    <el-dialog
+      class="dialog-attr"
+      destroy-on-close
+      align-center
+      width="90%"
+      v-model="matchMusic"
+      :title="'查找歌曲 - ' + waitMatchMusic.title"
+    >
       <search-music :search="willSearchString" />
     </el-dialog>
     <div ref="head" class="head">
       网易云 -
-      {{
-        user.netease.value.isLogin
-        ? user.netease.value.user.profile.nickname
-        : "请登录"
-      }}
+      {{ user.netease.value.isLogin ? user.netease.value.user.profile.nickname : "请登录" }}
     </div>
-    <div class="areas" :style="{
-          height: 'calc(100vh - ' + paddingHeadHeight + 'px)',
-        }">
+    <div
+      class="areas"
+      :style="{
+        height: 'calc(100vh - ' + paddingHeadHeight + 'px)',
+      }"
+    >
       <div v-if="!user.netease.value.isLogin" class="no-login">
         <div>{{ tips }}</div>
         <qrcode-vue :value="'http://music.163.com/login?codekey=' + unikey" :size="200" level="H"></qrcode-vue>
@@ -302,8 +271,16 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
       <div v-else class="login">
         <UserInfo :user-info="user.netease.value.user" />
         <div class="list-content">
-          <el-select-v2 filterable class="playlist" v-model="selectPlaylist" value-key="value.id"
-            :options="mPlaylistDropdown" placeholder="选择一个歌单" @change="loadUserPlaylist" size="large">
+          <el-select-v2
+            filterable
+            class="playlist"
+            v-model="selectPlaylist"
+            value-key="value.id"
+            :options="mPlaylistDropdown"
+            placeholder="选择一个歌单"
+            @change="loadUserPlaylist"
+            size="large"
+          >
             <template #default="{ item }">
               <div class="select-list">
                 <el-avatar size="small" class="list-img" :src="item.value.coverImgUrl" />
@@ -317,18 +294,26 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
           <span class="search-hint">结果列表[搜索到{{ totalSize }}条数据,当前第{{ page }}页]</span>
           <div @click="logout">退出登录</div>
           <el-table class="my-tb" :data="userPlaylistFetch" style="width: 100%; z-index: 0">
-            <el-table-column :formatter="(row: NeteasePlayListSongsList) => {
+            <el-table-column
+              :formatter="(row: NeteasePlayListSongsList) => {
               return timestampToTime(row.publishTime).split(' ')[0]
             }
-              " prop="publishTime" label="发表时间" width="120" />
+              "
+              prop="publishTime"
+              label="发表时间"
+              width="120"
+            />
             <el-table-column :show-overflow-tooltip="true" prop="docid" label="版权" width="100">
               <template #default="scope">
                 <div class="title-tip">
-                  <div class="fee-tip" :class="{
-                    'vip-tip': scope.row.fee === 1 || scope.row.fee === 4,
-                    'no-ip-tip': tb6V(scope.row.privileges) === 100,
-                    'vip-down': scope.row.fee === 8,
-                  }">
+                  <div
+                    class="fee-tip"
+                    :class="{
+                      'vip-tip': scope.row.fee === 1 || scope.row.fee === 4,
+                      'no-ip-tip': tb6V(scope.row.privileges) === 100,
+                      'vip-down': scope.row.fee === 8,
+                    }"
+                  >
                     {{ getFeeType(scope.row) }}
                   </div>
                 </div>
@@ -337,36 +322,50 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
             <el-table-column :show-overflow-tooltip="true" prop="title" label="歌曲名" min-width="300">
               <template #default="scope">
                 <div class="title-tip">
-                  <div class="flac-tip" v-if="scope.row.extra === 'flac'">
-                    无损
-                  </div>
+                  <div class="flac-tip" v-if="scope.row.extra === 'flac'">无损</div>
                   <div class="name">{{ scope.row.title }}</div>
                   <MdiCloudCheckOutline v-if="scope.row.cloud" style="margin-left: 10px" />
                 </div>
               </template>
             </el-table-column>
-            <el-table-column :show-overflow-tooltip="true" :formatter="(row: NeteasePlayListSongsList) => {
+            <el-table-column
+              :show-overflow-tooltip="true"
+              :formatter="(row: NeteasePlayListSongsList) => {
               return row.author.map(v => v.name).join(' / ')
-            }" prop="singer.name" label="艺术家" width="200" />
-            <el-table-column :show-overflow-tooltip="true" prop="album" label="专辑" width="200" />
+            }"
+              prop="singer.name"
+              label="艺术家"
+              width="200"
+            />
+            <el-table-column :show-overflow-tooltip="true" prop="album" label="Album" width="200" />
             <el-table-column fixed="right" label="操作">
               <template #default="scope">
-                <el-button :type="tb6V(scope.row.privileges) === 100 ? 'info' : 'primary'
-                  " size="small" @click="
-    tb6V(scope.row.privileges) === 100
-      ? null
-      : handleDown(scope.row)
-    ">下载
+                <el-button
+                  :type="tb6V(scope.row.privileges) === 100 ? 'info' : 'primary'"
+                  size="small"
+                  @click="tb6V(scope.row.privileges) === 100 ? null : handleDown(scope.row)"
+                  >下载
                 </el-button>
-                <el-button v-if="tb6V(scope.row.privileges) === 100" type="warning" size="small"
-                  @click="handleMatch(scope.row)">在线匹配
+                <el-button
+                  v-if="tb6V(scope.row.privileges) === 100"
+                  type="warning"
+                  size="small"
+                  @click="handleMatch(scope.row)"
+                  >在线匹配
                 </el-button>
                 <!--                <el-button link type="primary" size="small">试听</el-button>-->
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination v-model:current-page="page" @update:current-page="page_change" background class="tab-split"
-            :page-size="pageSize" layout="prev, pager, next" :total="totalSize" />
+          <el-pagination
+            v-model:current-page="page"
+            @update:current-page="page_change"
+            background
+            class="tab-split"
+            :page-size="pageSize"
+            layout="prev, pager, next"
+            :total="totalSize"
+          />
         </div>
       </div>
     </div>
@@ -394,7 +393,8 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
   flex-direction: row;
   align-items: center;
 
-  .name {}
+  .name {
+  }
 
   .flac-tip {
     font-size: 12px;
@@ -452,7 +452,7 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
 
     .search-hint {
       font-size: 14px;
-      color: var(--qiuchen-normal-black);
+      color: var(--normal-black);
       margin: 10px 0 0 10px;
     }
 
@@ -464,7 +464,8 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
   }
 }
 
-.no-login {}
+.no-login {
+}
 
 .dialog-attr {
   height: 80vh;
@@ -481,7 +482,8 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
   height: auto;
   align-items: center;
 
-  .list-img {}
+  .list-img {
+  }
 
   .list-right {
     margin-left: 10px;
@@ -497,13 +499,14 @@ const handleMatch = (song: NeteasePlayListSongsList) => {
   }
 
   .list-name {
-    color: var(--qiuchen-normal-black);
+    color: var(--normal-black);
   }
 
   .list-size {
     font-size: 6pt;
   }
 
-  .list-img {}
+  .list-img {
+  }
 }
 </style>

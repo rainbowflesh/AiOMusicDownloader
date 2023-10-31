@@ -1,10 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - QQMusic.py
-#  @修改时间    : 2023-07-30 09:53:12
-#  @上次修改    : 2023/7/30 下午9:53
-
 import json
 import uuid
 
@@ -626,7 +619,7 @@ class QQMusicApi(BaseApi):
 
             albumName = str(i["album"]["title"]).strip(" ")
             if albumName == "":
-                albumName = "未分类专辑"
+                albumName = "未分类Album"
 
             # 开始检查歌曲过滤显示
             # 第三方修改歌曲可以在这里对歌曲做二次处理
@@ -659,11 +652,11 @@ class QQMusicApi(BaseApi):
 
     def parseQQMusicAlbum(self, _id: str):
         """
-        从客户端接口获取专辑列表
+        从客户端接口获取Album列表
         参数:
-            _id: 专辑ID
+            _id: AlbumID
 
-        返回专辑列表:
+        返回Album列表:
 
         """
         _uuid = self.getUUID()
@@ -723,11 +716,11 @@ class QQMusicApi(BaseApi):
 
     def parseQQMusicToplist(self, _id: str):
         """
-        从客户端接口获取专辑列表
+        从客户端接口获取Album列表
         参数:
             _id: TopListID
 
-        返回专辑列表:
+        返回Album列表:
 
         """
         _uuid = self.getUUID()

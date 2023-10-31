@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - MiGu.py
-#  @修改时间    : 2023-07-28 11:49:29
-#  @上次修改    : 2023/7/28 下午11:49
 from downloader.src.Common import Http
 from downloader.src.Common.Http import HttpRequest
 

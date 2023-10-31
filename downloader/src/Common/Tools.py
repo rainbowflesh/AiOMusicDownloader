@@ -1,13 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - Tools.py
-#  @修改时间    : 2023-08-02 03:21:29
-#  @上次修改    : 2023/8/2 上午3:21
-
-# 部分函数功能优化，错误修复
-#  @作者         : QingXuDw
-#  @邮件         : wangjingye55555@outlook.com
 import json
 import os
 import threading
@@ -159,7 +149,7 @@ def downSingle(music, download_home, config):
             if info['AlbumInfoServer']['code'] != 104400 else music['singer']
         file = QQApi.getQQMusicFileName(music['prefix'], music['mid'], music['extra'])
         musicFileInfo = f"{music['singer']} - {music['title']} [{music['notice']}] {music['size']} - {file}"
-        link = handleQQ(music, musicFileInfo)  # 由于QQ歌曲的特殊性 这里处理一下获取专辑艺术家信息
+        link = handleQQ(music, musicFileInfo)  # 由于QQ歌曲的特殊性 这里处理一下获取Album艺术家信息
         super_music_info = {
             **music,
             'source_platform': "QQ",
@@ -295,7 +285,7 @@ def downSingle(music, download_home, config):
 
 def convert_webp_bytes2jpeg_bytes(webp_bytes=b''):
     """
-    转换webp二进制数据为jpeg专辑封面数据
+    转换webp二进制数据为jpegAlbum封面数据
     Args:
         webp_bytes: webp https response
 
@@ -469,8 +459,8 @@ def fulfillMusicMetaData(musicFile, metaDataInfo):
 
         artist = [it['name'] for it in metaDataInfo['artists']] if 'artists' in metaDataInfo else [
             metaDataInfo['singer']]
-        # 设置专辑艺术家让专辑中歌曲能完整显示出来
-        # TODO: 当存在多个专辑艺术家的时候无法确定谁才是此专辑主要作者 会引起分类错误 需要后期解决
+        # 设置Album艺术家让Album中歌曲能完整显示出来
+        # TODO: 当存在多个Album艺术家的时候无法确定谁才是此Album主要作者 会引起分类错误 需要后期解决
         albumartist = [it['name'] for it in metaDataInfo['artists']] if 'artists' in metaDataInfo else [
             metaDataInfo['singer']
         ]
@@ -502,10 +492,10 @@ def fulfillMusicMetaData(musicFile, metaDataInfo):
             )
             extra_info_full = meta["extra"]
             date = meta['track_info']['time_public']
-            # 专辑中歌曲的序号 iTunes里是最全的 qq搞什么鬼
+            # Album中歌曲的序号 iTunes里是最全的 qq搞什么鬼
             trackNumber = str(meta['track_info']['index_album'])
 
-            # 专辑描述
+            # Album描述
             description = meta['albumCollection']['basicInfo']['desc']
             # 唱片公司
             label = meta['albumCollection']['company']['name']
@@ -515,7 +505,7 @@ def fulfillMusicMetaData(musicFile, metaDataInfo):
             if geners is not None:
                 for it in geners:
                     gener.append(it['name'])
-            # 专辑艺术家
+            # Album艺术家
             albumartist = [it['name'] for it in meta['albumCollection']['singer']['singerList']]
 
             LANGUAGE = meta['albumCollection']['basicInfo']['language']
@@ -605,7 +595,7 @@ def fulfillMusicMetaData(musicFile, metaDataInfo):
         source_platform = json.dumps({
             'platform': metaDataInfo['source_platform'],
             "musicId": metaDataInfo['source_platform_music_id'],
-            "productby": "秋城落叶无损音乐 https://github.com/QiuChenlyOpenSource/QQFlacMusicDownloader".encode(
+            "productby": "Not Anonymous".encode(
                 "utf-8").decode(),
             "extra_info_full": extra_info_full.encode("utf-8").decode()
         }, ensure_ascii=False)
@@ -643,21 +633,21 @@ def write_metadata_information(
         type: int,
         musicFile: str,  # 文件路径
         lyric: str,  # 歌词信息
-        album: str,  # 专辑名称,
+        album: str,  # Album名称,
         date: str,  # 发布年代
         title: str,  # 歌曲名称
         artist: list[str],  # 艺术家
-        albumArtist: list[str],  # 专辑艺术家
+        albumArtist: list[str],  # Album艺术家
         trackNumber,  # CD中的曲目序号
         discNumber,  # CD 磁碟序号
         trackCount,  # CD 中曲目总数量 Apple Music 特有
         discCount,  # CD 磁碟总数量 Apple Music 特有
-        description,  # 专辑介绍
+        description,  # Album介绍
         publishCompany,  # 唱片公司
         gener: list[str],  # 流派 数组
         LANGUAGE,  # 语种
         singerImage,  # 歌手照片 数组
-        albumImage,  # 专辑封面
+        albumImage,  # Album封面
         attachmentImgs,  # 其他图片 数组
         source_platform,  # 附加信息
 ):
@@ -695,9 +685,9 @@ def write_metadata_information(
 
         # 艺术家
         music['artist'] = artist
-        # 设置专辑艺术家让专辑中歌曲能完整显示出来
+        # 设置Album艺术家让Album中歌曲能完整显示出来
         music['albumartist'] = albumArtist
-        # 专辑
+        # Album
         music['album'] = album
         music['DATE'] = date
         music['trackNumber'] = trackNumber
@@ -727,7 +717,7 @@ def write_metadata_information(
         # 11 - 海报或横幅
         # 所以,常见的使用场景是:
         #
-        # 专辑封面:type=3(前封面)
+        # Album封面:type=3(前封面)
         # 歌曲封面:type=3(前封面)
         # 艺术家图片:type=5或9
         music.add_picture(albumImage)
@@ -759,10 +749,10 @@ def write_metadata_information(
         # 写入歌手
         music["TPE1"] = TPE1(encoding=3, text=artist)
 
-        # 专辑名称
+        # Album名称
         music["TALB"] = TALB(encoding=3, text=album)
 
-        # 专辑艺术家
+        # Album艺术家
         music["TPE2"] = TPE2(encoding=3, text=albumArtist)
 
         # 发布日期

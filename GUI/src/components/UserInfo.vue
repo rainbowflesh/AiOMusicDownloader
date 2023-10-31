@@ -1,20 +1,21 @@
 <template>
   <div class="user-info">
     <el-avatar class="avatar" :size="100" :src="userInfo.profile.avatarUrl" />
-    <div class="bg" :style="{
-      background: 'no-repeat center/cover url(' + userInfo.profile.backgroundUrl + ')'
-    }"></div>
+    <div
+      class="bg"
+      :style="{
+        background: 'no-repeat center/cover url(' + userInfo.profile.backgroundUrl + ')',
+      }"
+    ></div>
     <div class="info-area">
       <div>UID {{ userInfo.profile.userId }}</div>
       <div class="tag">
-        {{
-          userInfo.profile.vipType === 0 ? "非会员" : "会员" + userInfo.profile.viptypeVersion + "级别"
-        }}
+        {{ userInfo.profile.vipType === 0 ? "None Vip" : "Vip" + userInfo.profile.viptypeVersion + "Level" }}
       </div>
       <div class="area">
         <div class="nickname">{{ userInfo.profile.nickname }}</div>
       </div>
-      <div class="reg-time">注册时间 {{ timestampToTime(userInfo.profile.createTime) }}</div>
+      <div class="reg-time">Regist Date {{ timestampToTime(userInfo.profile.createTime) }}</div>
     </div>
   </div>
 </template>
@@ -24,12 +25,12 @@ import { NetEaseUserInfo } from "@/utils/type/UserInfoDetail";
 import { timestampToTime } from "../utils/Utils";
 
 defineProps<{
-  userInfo: NetEaseUserInfo
-}>()
+  userInfo: NetEaseUserInfo;
+}>();
 </script>
 
 <style lang="scss" scoped>
-$shadow: 0 0 10px rgba(0, 0, 0, .4);
+$shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 
 .user-info {
   margin: 50px 10px 10px 10px;
@@ -52,7 +53,7 @@ $shadow: 0 0 10px rgba(0, 0, 0, .4);
     overflow: hidden;
 
     &::before {
-      content: '';
+      content: "";
       //background-color: #000;
       width: 100%;
       height: 100%;
@@ -86,13 +87,12 @@ $shadow: 0 0 10px rgba(0, 0, 0, .4);
       padding: 2px 8px;
       margin-right: 8px;
       background-color: #c1121f;
-      color: var(--qiuchen-normal-black);
+      color: var(--normal-black);
     }
 
     .area {
       display: flex;
       flex-direction: column;
-
 
       .nickname {
         font-size: 35px;
@@ -101,7 +101,7 @@ $shadow: 0 0 10px rgba(0, 0, 0, .4);
 
     .reg-time {
       font-size: 14px;
-      color: var(--qiuchen-normal-white);
+      color: var(--normal-white);
     }
   }
 }

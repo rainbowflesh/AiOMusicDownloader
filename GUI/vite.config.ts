@@ -1,12 +1,3 @@
-/*
- * # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
- * # @作者         : 秋城落叶(QiuChenly)
- * # @邮件         : qiuchenly@outlook.com
- * # @文件         : 项目 [qqmusic] - vite.config.ts
- * # @修改时间    : 2023-03-15 03:50:51
- * # @上次修改    : 2023/3/15 上午3:50
- */
-
 import { BuildOptions, defineConfig } from "vite";
 import path from "path";
 import vue from "@vitejs/plugin-vue";

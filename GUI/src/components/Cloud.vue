@@ -1,12 +1,3 @@
-<!--
-  - # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-  - # @作者         : 秋城落叶(QiuChenly)
-  - # @邮件         : qiuchenly@outlook.com
-  - # @文件         : 项目 [qqmusic] - Cloud.vue
-  - # @修改时间    : 2023-03-15 12:28:41
-  - # @上次修改    : 2023/3/15 上午12:28
-  -->
-
 <script lang="ts" setup>
 import { reactive, ref, watch, computed } from "vue";
 import { Api } from "@/utils/Http";
@@ -48,9 +39,7 @@ watch(searchKey, (value, oldValue, onCleanup) => {
   });
 });
 
-const tableLst = computed(() =>
-  lst.value?.list.filter((data) => data.fileName.includes(filterText.value))
-);
+const tableLst = computed(() => lst.value?.list.filter((data) => data.fileName.includes(filterText.value)));
 
 const getSongDesc = (item: SearchMusicResultSingle) => {
   return item.singer + " - " + item.title + " ｜ " + item.album;
@@ -60,8 +49,7 @@ let waitModifyData = ref<List>({} as List);
 const handleModify = (row: List) => {
   waitModifyData.value = row;
   modifyMusicInfo.value = !modifyMusicInfo.value;
-  searchKey.value =
-    waitModifyData.value.songName + " " + waitModifyData.value.artist;
+  searchKey.value = waitModifyData.value.songName + " " + waitModifyData.value.artist;
   console.log(row);
 };
 
@@ -73,14 +61,14 @@ const submitModify = (asid: number) => {
   }).then((r) => {
     if (r.code === 200) {
       ElNotification({
-        title: "成功",
-        message: "修改信息成功。",
+        title: "success",
+        message: "User info success changed。",
         type: "success",
       });
       modifyMusicInfo.value = !modifyMusicInfo.value;
     } else {
       ElNotification({
-        title: "错误",
+        title: "error",
         message: r.message,
         type: "error",
       });
@@ -93,7 +81,7 @@ fetchAllSongs();
 
 <template>
   <div class="content" v-if="lst">
-    <h1>云盘歌曲纠错 {{ lst.hasMore ? "有更多" : "没有更多" }}</h1>
+    <h1>Cloud disk correction {{ lst.hasMore ? "More" : "No More" }}</h1>
     <el-table class="my-tb" :data="tableLst" style="width: 100%; z-index: 0">
       <el-table-column
         :formatter="
@@ -102,104 +90,69 @@ fetchAllSongs();
                 }
               "
         prop="publishTime"
-        label="上传时间"
+        label="Publish Time"
         width="120"
       />
-      <el-table-column
-        :show-overflow-tooltip="true"
-        prop="songName"
-        label="歌曲名"
-        min-width="300"
-      />
+      <el-table-column :show-overflow-tooltip="true" prop="songName" label="Title" min-width="300" />
       <el-table-column
         :show-overflow-tooltip="true"
         :formatter="(row:List) => {
                   return row.artist
                 }"
         prop="singer.name"
-        label="艺术家"
+        label="Artist"
         width="200"
       />
-      <el-table-column
-        :show-overflow-tooltip="true"
-        prop="album"
-        label="专辑"
-        width="200"
-      />
+      <el-table-column :show-overflow-tooltip="true" prop="album" label="Album" width="200" />
       <el-table-column fixed="right" min-width="100">
         <template #header>
-          <el-input
-            v-model="filterText"
-            size="default"
-            placeholder="输入过滤歌曲"
-          />
+          <el-input v-model="filterText" size="default" placeholder="Input filter" />
         </template>
         <template #default="scope">
-          <el-button
-            type="primary"
-            size="small"
-            @click="handleModify(scope.row)"
-            >修改
-          </el-button>
-          <el-button type="danger" size="small" @click="handleDel(scope.row)"
-            >删除
-          </el-button>
-          <!--                <el-button link type="primary" size="small">试听</el-button>-->
+          <el-button type="primary" size="small" @click="handleModify(scope.row)">Change</el-button>
+          <el-button type="danger" size="small" @click="handleDel(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
-  <el-dialog
-    v-model="modifyMusicInfo"
-    :title="'修改歌曲匹配信息 - ' + waitModifyData.fileName"
-  >
+  <el-dialog v-model="modifyMusicInfo" :title="'Change Track Information - ' + waitModifyData.fileName">
     <el-form>
-      <el-form-item label="当前歌曲识别信息" :label-width="formLabelWidth">
+      <el-form-item label="Current track recognition data" :label-width="formLabelWidth">
         <el-descriptions :title="waitModifyData.fileName" :column="3" border>
-          <el-descriptions-item label="歌曲名" label-align="right" align="left"
+          <el-descriptions-item label="Track" label-align="right" align="left"
             >{{ waitModifyData.songName }}
           </el-descriptions-item>
-          <el-descriptions-item label="歌手" label-align="right" align="left"
+          <el-descriptions-item label="Artist" label-align="right" align="left"
             >{{ waitModifyData.artist }}
           </el-descriptions-item>
-          <el-descriptions-item label="专辑" label-align="right" align="center"
+          <el-descriptions-item label="Album" label-align="right" align="center"
             >{{ waitModifyData.album }}
           </el-descriptions-item>
-          <el-descriptions-item label="文件名" label-align="right" align="left">
+          <el-descriptions-item label="Filename" label-align="right" align="left">
             <el-tag size="small">{{ waitModifyData.fileName }}</el-tag>
           </el-descriptions-item>
-          <el-descriptions-item
-            label="参考搜索词"
-            label-align="right"
-            align="left"
-          >
+          <el-descriptions-item label="Search Keyword" label-align="right" align="left">
             {{ waitModifyData.songName + " " + waitModifyData.artist }}
           </el-descriptions-item>
         </el-descriptions>
       </el-form-item>
-      <el-form-item label="搜索歌曲名称" :label-width="formLabelWidth">
+      <el-form-item label="Search by track" :label-width="formLabelWidth">
         <el-input v-model="searchKey" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="服务器结果" :label-width="formLabelWidth">
-        <el-select v-model="musicID" placeholder="请选择一个搜索结果">
-          <el-option
-            v-for="inx in searchLstCache"
-            :label="getSongDesc(inx)"
-            :value="inx.musicid"
-          />
+      <el-form-item label="Server Result" :label-width="formLabelWidth">
+        <el-select v-model="musicID" placeholder="Select Result">
+          <el-option v-for="inx in searchLstCache" :label="getSongDesc(inx)" :value="inx.musicid" />
         </el-select>
       </el-form-item>
-      <el-form-item label="指定歌曲ID" :label-width="formLabelWidth">
+      <el-form-item label="Specify track ID" :label-width="formLabelWidth">
         <el-input v-model="musicID" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="modifyMusicInfo = false">取消</el-button>
-        <el-button type="danger" @click="submitModify(0)">取消匹配</el-button>
-        <el-button type="primary" @click="submitModify(musicID)">
-          确认匹配
-        </el-button>
+        <el-button @click="modifyMusicInfo = false">Cancel</el-button>
+        <el-button type="danger" @click="submitModify(0)">Cancel match</el-button>
+        <el-button type="primary" @click="submitModify(musicID)">Conform match</el-button>
       </span>
     </template>
   </el-dialog>

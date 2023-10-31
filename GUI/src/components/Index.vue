@@ -1,38 +1,33 @@
 <!--
-  - # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-  - # @作者         : 秋城落叶(QiuChenly)
-  - # @邮件         : qiuchenly@outlook.com
-  - # @文件         : 项目 [qqmusic] - Index.vue
-  - # @修改时间    : 2023-03-14 08:23:20
-  - # @上次修改    : 2023/3/14 下午8:23
+  - # Copyright (c) 2023. 秋城落叶 y All Rights Reserved
   -->
-
 <template>
   <div class="content">
     <div class="left-banner">
-      <div class="title">
-        <div>曲库流浪计划</div>
-      </div>
       <div class="functions">
         <div class="home-page" @click="router.push('/home')">
           <i-system-uicons-sun />
-          <span>主页</span>
+          <span>Settings</span>
         </div>
         <div class="home-page" @click="router.push('/search')">
           <i-system-uicons-search />
-          <span>音乐搜索</span>
+          <span>Search</span>
         </div>
         <div class="home-page" @click="router.push('/netease')">
           <i-carbon-cloud-data-ops />
-          <span>网易云登录</span>
+          <span>Login</span>
         </div>
         <div class="home-page" @click="router.push('/cloud')">
           <i-carbon-cloud-data-ops />
-          <span>网易云云盘</span>
+          <span>Cloud Disk</span>
         </div>
         <div class="home-page" @click="router.push('/download')">
           <i-carbon-download />
-          <span>下载管理</span>
+          <span>Downloads</span>
+        </div>
+        <div class="about" @click="router.push('/about')">
+          <i-carbon-download />
+          <span>About</span>
         </div>
       </div>
     </div>
@@ -49,7 +44,6 @@ import { useRouter } from "vue-router";
 import { SystemStore } from "@/store/SystemStore";
 
 const { basicStore } = SystemStore();
-// 路由传参
 const router = useRouter();
 onMounted(() => {
   if (basicStore.firstOpen) {
@@ -66,7 +60,7 @@ onMounted(() => {
   .left-banner {
     box-sizing: border-box;
     box-shadow: none !important;
-    border: solid 1px var(--qiuchen-text);
+    border: solid 1px var(--text);
 
     width: auto !important;
     min-width: auto !important;
@@ -78,20 +72,17 @@ onMounted(() => {
   }
 
   .functions {
-
     & div {
       box-shadow: none !important;
-      border: solid 1px var(--qiuchen-text);
+      border: solid 1px var(--text);
       padding: 10px !important;
     }
-
 
     span {
       display: none;
     }
   }
 }
-
 
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -110,7 +101,7 @@ onMounted(() => {
 
   .left-banner {
     overflow: hidden;
-    box-shadow: 0 0 10px var(--qiuchen-text);
+    box-shadow: 0 0 10px var(--text);
     // background-color: darkorange;
     width: 300px;
     min-width: 300px;
@@ -125,16 +116,13 @@ onMounted(() => {
       padding: 10px;
       font-size: 20px;
       // background-color: darkorange;
-      box-shadow: 0 0 10px var(--qiuchen-text);
-
-
-
+      box-shadow: 0 0 10px var(--text);
     }
 
     .functions {
       & div {
         // background-color: #000;
-        box-shadow: 0 0 6px var(--qiuchen-text);
+        box-shadow: 0 0 6px var(--text);
         margin: 10px;
         padding: 15px 0;
         display: flex;
@@ -146,7 +134,7 @@ onMounted(() => {
         transition: all 0.3s;
 
         &:hover {
-          box-shadow: 0 0 6px var(--qiuchen-hover-text);
+          box-shadow: 0 0 6px var(--hover-text);
         }
 
         & span {

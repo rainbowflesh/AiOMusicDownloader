@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - es.py
-#  @修改时间    : 2023-03-15 04:38:40
-#  @上次修改    : 2023/3/15 上午4:38
 from flask import request
 from downloader.src.Api.Netease import Netease
 from downloader.App import app

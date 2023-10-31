@@ -1,10 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - qq.py
-#  @修改时间    : 2023-03-14 02:55:44
-#  @上次修改    : 2023/3/14 下午2:55
-
 from downloader.src.Api.QQMusic import QQMusicApi
 from downloader.App import app
 
@@ -23,7 +16,7 @@ def search(searchKey: str, page=1, size=30):
             # 加载歌单
             lst = QQApi.parseQQMusicPlaylist(_id)
         elif command == 'b':
-            # 加载专辑
+            # 加载Album
             lst = QQApi.parseQQMusicAlbum(_id)
         elif command == 'id':
             # 指定单曲id

@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - kw.py
-#  @修改时间    : 2023-07-28 11:32:28
-#  @上次修改    : 2023/7/28 下午11:32
 from flask import request
 
 from downloader.src.Api.Kuwo import KwApi
@@ -46,7 +40,7 @@ def mgsearch(searchKey: str, page=1, size=100):
             pass
             # 加载歌单
         elif command == 'b':
-            # 加载专辑
+            # 加载Album
             lst = mg.getAlbumList(_id)
         elif command == 'id':
             # 指定单曲id

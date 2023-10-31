@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - EncryptTools.py
-#  @修改时间    : 2023-04-23 03:41:34
-#  @上次修改    : 2023/4/23 下午3:41
 import json
 import random
 import zlib
@@ -445,9 +439,7 @@ def testGetLink(qqmusicID='003cI52o4daJJL', platform='qq', quality='sq'):
     return res['data']
 
 
-# testGetLink()
-
-
+# qiuchenly the original creator
 def testUnzip():
     file = '/Users/qiuchenly/Downloads/response'
     # file = '/Users/qiuchenly/Downloads/request'

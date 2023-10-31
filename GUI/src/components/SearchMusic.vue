@@ -1,26 +1,14 @@
-<!--
-  - # Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-  - # @作者         : 秋城落叶(QiuChenly)
-  - # @邮件         : qiuchenly@outlook.com
-  - # @文件         : 项目 [qqmusic] - SearchMusic.vue
-  - # @修改时间    : 2023-04-14 01:33:25
-  - # @上次修改    : 2023/4/14 下午1:33
-  -->
-
 <script lang="ts" setup>
 import { Search } from "@element-plus/icons-vue";
 import { ref, onMounted, watch, watchEffect } from "vue";
 import { ref2, SystemStore } from "@/store/SystemStore";
 import { Api } from "@/utils/Http";
-import {
-  SearchMusicResult,
-  SearchMusicResultSingle,
-} from "@/utils/type/BasicType";
+import { SearchMusicResult, SearchMusicResultSingle } from "@/utils/type/BasicType";
 
 //@ts-ignore
 import EncodeEx from "../utils/MyMp3.js";
 //@ts-ignore
-import encMD5 from "../utils/kw.js"
+import encMD5 from "../utils/kw.js";
 
 import { platformList } from "@/utils/Utils";
 
@@ -78,13 +66,11 @@ const timeFormat = (row: SearchMusicResultSingle) => {
 const filterList = (singleMusic: SearchMusicResultSingle) => {
   if (!basicStore.config.disableFilterKey) {
     for (let k of basicStore.filterKeys) {
-      if (singleMusic.title.toUpperCase().includes(k.toUpperCase()))
-        return false;
+      if (singleMusic.title.toUpperCase().includes(k.toUpperCase())) return false;
     }
   }
   if (basicStore.config.ignoreNoAlbumSongs) {
-    if (singleMusic.album == "未分类专辑" || singleMusic.album == "")
-      return false;
+    if (singleMusic.album == "未分类Album" || singleMusic.album == "") return false;
   }
   if (basicStore.config.onlyMatchSearchKey) {
     let artist = getMusicSinger(singleMusic);
@@ -95,11 +81,7 @@ const filterList = (singleMusic: SearchMusicResultSingle) => {
 };
 
 const search = async () => {
-  if (
-    basicStore.searchHistory.find(
-      (v, i, array) => v === basicStore.lastSearch
-    ) === undefined
-  )
+  if (basicStore.searchHistory.find((v, i, array) => v === basicStore.lastSearch) === undefined)
     basicStore.searchHistory.push(basicStore.lastSearch);
 
   const resolve = (searchMusicResult: SearchMusicResult) => {
@@ -119,10 +101,9 @@ const search = async () => {
       v: "beta",
     });
     Api.searchMusicForMyFreeMp3(basicStore.config.platform, data).then(resolve);
-  }
-  else if (basicStore.config.platform === "kw") {
+  } else if (basicStore.config.platform === "kw") {
     const token = await Api.getKWToken();
-    const result = encMD5(token.token)
+    const result = encMD5(token.token);
     console.log(token.token, result);
     Api.searchMusic(
       basicStore.lastSearch,
@@ -131,51 +112,32 @@ const search = async () => {
       30,
       "/" + token.token + "/" + result
     ).then(resolve);
-  }
-  else
-    Api.searchMusic(
-      basicStore.lastSearch,
-      music_current_page.value,
-      basicStore.config.platform,
-    ).then(resolve);
+  } else Api.searchMusic(basicStore.lastSearch, music_current_page.value, basicStore.config.platform).then(resolve);
 };
 
-function getSinger(
-  row: SearchMusicResultSingle,
-  column: any,
-  cellValue: any,
-  index: number
-) {
+function getSinger(row: SearchMusicResultSingle, column: any, cellValue: any, index: number) {
   // console.log(row)
   return getMusicSinger(row);
 }
 
-function getFileTypeAndSize(
-  row: SearchMusicResultSingle,
-  column: any,
-  cellValue: any,
-  index: number
-) {
+function getFileTypeAndSize(row: SearchMusicResultSingle, column: any, cellValue: any, index: number) {
   // console.log(row)
   return row.notice + " | " + row.size;
 }
 
 const paddingHeadHeight = ref(0);
 
-
-
 onMounted(() => {
-  const observer = new ResizeObserver(entries => {
-    // 在回调中获得高度 
-    paddingHeadHeight.value = headRef.value.clientHeight
-  })
-  observer.observe(headRef.value)
+  const observer = new ResizeObserver((entries) => {
+    // 在回调中获得高度
+    paddingHeadHeight.value = headRef.value.clientHeight;
+  });
+  observer.observe(headRef.value);
 
   window.onresize = () => {
     // 窗口大小变化时更新高度
-    paddingHeadHeight.value = headRef.value.clientHeight
-
-  }
+    paddingHeadHeight.value = headRef.value.clientHeight;
+  };
 
   // console.log(headRef.value);
   // const h = headRef.value as HTMLDivElement;
@@ -247,12 +209,11 @@ const handleSearch = () => {
 
 const downloadAllPage = function () {
   ElNotification({
-    title: '功能还没做捏',
-    message:
-      '关注嘉然 顿顿解馋 关注柯洁喵 谢谢喵 关注七海Nana7mi 010 谢谢喵 关注天选罕见冬雪莲 谢谢喵',
-    type: 'error',
+    title: "功能还没做捏",
+    message: "关注嘉然 顿顿解馋 关注柯洁喵 谢谢喵 关注七海Nana7mi 010 谢谢喵 关注天选罕见冬雪莲 谢谢喵",
+    type: "error",
   });
-}
+};
 </script>
 
 <template>
@@ -260,8 +221,12 @@ const downloadAllPage = function () {
     <div ref="headRef" class="head-section">
       <div class="top-tip">搜索</div>
       <div class="area-top">
-        <el-input v-model="basicStore.lastSearch" placeholder="请输入关键词搜索" class="input-with-select"
-          @keyup.enter="handleSearch">
+        <el-input
+          v-model="basicStore.lastSearch"
+          placeholder="请输入关键词搜索"
+          class="input-with-select"
+          @keyup.enter="handleSearch"
+        >
           <template #prepend>
             <el-select v-model="basicStore.config.platform" placeholder="请选择接口" style="width: 120px">
               <el-option v-for="it in platformList" :label="it.name" :value="it.value" />
@@ -274,25 +239,24 @@ const downloadAllPage = function () {
         <div class="options">
           <el-checkbox v-model="basicStore.config.onlyMatchSearchKey" label="仅显示搜索的歌手歌曲" />
           <el-checkbox v-model="basicStore.config.disableFilterKey" label="不使用关键词过滤歌曲" />
-          <el-checkbox v-model="basicStore.config.ignoreNoAlbumSongs" label="屏蔽无所属专辑歌曲" />
-          <el-checkbox v-model="basicStore.config.classificationMusicFile" label="下载歌曲按专辑分类" />
-          <!--        <el-checkbox v-model="classificationMusicFile" label="按照专辑名称分文件夹归档音乐歌曲文件"/>-->
+          <el-checkbox v-model="basicStore.config.ignoreNoAlbumSongs" label="屏蔽无所属Album歌曲" />
+          <el-checkbox v-model="basicStore.config.classificationMusicFile" label="下载歌曲按Album分类" />
+          <!--        <el-checkbox v-model="classificationMusicFile" label="按照Album名称分文件夹归档音乐歌曲文件"/>-->
           <!--        <el-checkbox v-model="checked3" label="Option 1"/>-->
         </div>
-        <div class="area-action" v-if="searchCache &&
-          searchCache.page.size > 0 &&
-          searchCache?.list.length !== 0
-          ">
-          <el-button type="primary" @click="downloadAllOfPage">仅下载本页
-          </el-button>
-          <el-button type="primary" @click="downloadAllPage">下载所有页
-          </el-button>
+        <div class="area-action" v-if="searchCache && searchCache.page.size > 0 && searchCache?.list.length !== 0">
+          <el-button type="primary" @click="downloadAllOfPage">仅下载本页 </el-button>
+          <el-button type="primary" @click="downloadAllPage">下载所有页 </el-button>
         </div>
       </div>
     </div>
-    <div :style="{
-      'margin-top': paddingHeadHeight + 'px',
-    }" v-if="searchCache === undefined || basicStore.lastSearch.length === 0" class="history">
+    <div
+      :style="{
+        'margin-top': paddingHeadHeight + 'px',
+      }"
+      v-if="searchCache === undefined || basicStore.lastSearch.length === 0"
+      class="history"
+    >
       <div class="union">
         <i-system-uicons-undo-history />
         <span style="margin-left: 4px">历史搜索</span>
@@ -309,16 +273,23 @@ const downloadAllPage = function () {
     <!-- :style="{
       height: 'calc(100% - ' + paddingHeadHeight + 'px)',
     }" -->
-    <div v-else class="search-list" :style="{
-      'margin-top': paddingHeadHeight + 'px',
-    }">
+    <div
+      v-else
+      class="search-list"
+      :style="{
+        'margin-top': paddingHeadHeight + 'px',
+      }"
+    >
       <div style="margin: 10px" v-if="searchCache === undefined || searchCache.list.length === 0" class="error-load">
-        <el-empty :description="searchCache?.page.size > 0
-          ? '共搜索到' +
-          searchCache?.page.size +
-          '条数据,但是过滤后没有发现符合条件的数据。请检查搜索过滤条件是否设置正确。'
-          : '服务器请求搜索结果失败,请重试。'
-          " />
+        <el-empty
+          :description="
+            searchCache?.page.size > 0
+              ? '共搜索到' +
+                searchCache?.page.size +
+                '条数据,但是过滤后没有发现符合条件的数据。请检查搜索过滤条件是否设置正确。'
+              : '服务器请求搜索结果失败,请重试。'
+          "
+        />
       </div>
       <div class="search-list-a" v-else>
         <div class="container">
@@ -327,35 +298,44 @@ const downloadAllPage = function () {
             <el-table-column :show-overflow-tooltip="true" prop="title" label="歌曲名" min-width="300">
               <template #default="scope">
                 <div class="title-tip">
-                  <div class="flac-tip" v-if="scope.row.extra === 'flac'">
-                    无损
-                  </div>
+                  <div class="flac-tip" v-if="scope.row.extra === 'flac'">无损</div>
                   <div class="name">{{ scope.row.title }}</div>
                 </div>
               </template>
             </el-table-column>
-            <el-table-column :show-overflow-tooltip="true" :formatter="getSinger" prop="singer.name" label="艺术家"
-              width="200" />
-            <el-table-column :show-overflow-tooltip="true" prop="album" label="专辑" width="200" />
-            <el-table-column :formatter="getFileTypeAndSize" :show-overflow-tooltip="true" prop="notice" label="品质"
-              width="250" />
-            <el-table-column fixed="right" label="操作">
+            <el-table-column
+              :show-overflow-tooltip="true"
+              :formatter="getSinger"
+              prop="singer.name"
+              label="艺术家"
+              width="200"
+            />
+            <el-table-column :show-overflow-tooltip="true" prop="album" label="Album" width="200" />
+            <el-table-column
+              :formatter="getFileTypeAndSize"
+              :show-overflow-tooltip="true"
+              prop="notice"
+              label="Quality"
+              width="250"
+            />
+            <el-table-column fixed="right" label="Action">
               <template #default="scope">
-                <el-button link type="primary" size="small" @click="handleDown(scope.row)">下载
-                </el-button>
-                <!--                <el-button link type="primary" size="small">试听</el-button>-->
+                <el-button link type="primary" size="small" @click="handleDown(scope.row)">Download </el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
         <div class="bottom" v-if="searchCache">
-          <el-pagination v-model:current-page="music_current_page" @update:current-page="page_change" background
-            class="tab-split" :page-size="30" layout="prev, pager, next" :total="parseInt(searchCache.page.size + '')" />
-          <div class="tips">
-            搜索到{{ searchCache.page.size }}条数据,当前第{{
-              searchCache.page.cur
-            }}页
-          </div>
+          <el-pagination
+            v-model:current-page="music_current_page"
+            @update:current-page="page_change"
+            background
+            class="tab-split"
+            :page-size="30"
+            layout="prev, pager, next"
+            :total="parseInt(searchCache.page.size + '')"
+          />
+          <div class="tips">{{ searchCache.page.cur }}/{{ searchCache.page.size }}</div>
         </div>
       </div>
     </div>
@@ -375,7 +355,7 @@ const downloadAllPage = function () {
     top: 0;
     left: 0;
     right: 0;
-    border-bottom: solid 1px var(--qiuchen-text-15);
+    border-bottom: solid 1px var(--text-15);
     margin: 0 !important;
     backdrop-filter: blur(10px);
 
@@ -432,8 +412,6 @@ const downloadAllPage = function () {
   align-items: center;
   position: relative;
 
-  .input-with-select {}
-
   .area-top {
     display: flex;
     flex-direction: column;
@@ -470,12 +448,12 @@ const downloadAllPage = function () {
       border-radius: 5px;
       cursor: pointer;
       transition: all 0.2s;
-      box-shadow: 0 0 3px var(--qiuchen-text);
+      box-shadow: 0 0 3px var(--text);
       margin-right: 10px;
       margin-bottom: 10px;
 
       &:hover {
-        box-shadow: 0 0 5px var(--qiuchen-hover-text);
+        box-shadow: 0 0 5px var(--hover-text);
       }
     }
   }
@@ -484,14 +462,14 @@ const downloadAllPage = function () {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background-color: var(--qiuchen-normal-white);
+    background-color: var(--normal-white);
     border-radius: 100%;
     display: flex;
     width: 45px;
     height: 45px;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 5px var(--qiuchen-hover-text);
+    box-shadow: 0 0 5px var(--hover-text);
     cursor: pointer;
     transition: all 0.2s;
 

@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - Kuwo.py
-#  @修改时间    : 2023-04-23 03:31:41
-#  @上次修改    : 2023/4/23 下午3:31
 import uuid
 import re
 

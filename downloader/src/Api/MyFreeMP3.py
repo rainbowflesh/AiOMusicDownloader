@@ -1,9 +1,3 @@
-#  Copyright (c) 2023. 秋城落叶, Inc. All Rights Reserved
-#  @作者         : 秋城落叶(QiuChenly)
-#  @邮件         : qiuchenly@outlook.com
-#  @文件         : 项目 [qqmusic] - MyFreeMP3.py
-#  @修改时间    : 2023-07-24 06:21:40
-#  @上次修改    : 2023/7/24 上午4:33
 import time
 from typing import Dict
 
